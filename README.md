@@ -16,6 +16,10 @@ Building shared libraries is done with
 
 `make stdpwn` for the standard library.
 
+# Installation
+The library can be installed on the system globally by invoking `make install`.
+To remove it from the system `make deinstall` can be used.
+
 # TODO
 
 - [ ] Implement async networking
