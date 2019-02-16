@@ -7,21 +7,14 @@ AR?=ar
 CFLAGS:=-O2 -fstack-protector-all -fPIE -fPIC -pipe
 LIBRARY_FLAGS=-Werror -pedantic -Wall -Wextra
 LDFLAGS:=-shared
-MAINFILE?=main.c
 STDPWN_DIR=src/cpwn/stdpwn
 NETWORKING_DIR=src/cpwn/networking
-INCLUDES=-I.
 CFILES:=${STDPWN_DIR}/alloc.c ${STDPWN_DIR}/colors.c ${STDPWN_DIR}/cstring.c ${STDPWN_DIR}/error.c ${NETWORKING_DIR}/tcp/tcp.c
-OUTFILE?=main.o
-VERSION=1.0.1
 SYSTEM_LIB_PATH?=/usr/lib
 SYSTEM_INCLUDE_PATH?=/usr/include
 BUILD_DIR?=./build
 
-executable:
-	${CC} ${CFLAGS} ${CFILES} ${MAINFILE} -o ${OUTFILE} ${INCLUDES}
-
-trycompile: stdpwn networking
+compile: stdpwn networking
 
 ########################################################################################################################
 #	Networking
@@ -35,7 +28,7 @@ networking_object_files: .tcp.o
 
 .tcp.o:
 	@echo Compiling the tcp library...
-	${CC} ${CFLAGS} ${LIBRARY_FLAGS} -c ${NETWORKING_DIR}/tcp/tcp.c -o ${NETWORKING_DIR}/tcp/tcp.o  ${INCLUDES}
+	${CC} ${CFLAGS} ${LIBRARY_FLAGS} -c ${NETWORKING_DIR}/tcp/tcp.c -o ${NETWORKING_DIR}/tcp/tcp.o
 
 ########################################################################################################################
 #	stdpwn
@@ -47,16 +40,16 @@ stdpwn: stdpwn_object_files
 stdpwn_object_files: .alloc.o .colors.o .cstring.o .error.o
 
 .alloc.o:
-	${CC} ${CFLAGS} ${LIBRARY_FLAGS} -c ${STDPWN_DIR}/alloc.c -o ${STDPWN_DIR}/alloc.o ${INCLUDES}
+	${CC} ${CFLAGS} ${LIBRARY_FLAGS} -c ${STDPWN_DIR}/alloc.c -o ${STDPWN_DIR}/alloc.o
 
 .colors.o:
-	${CC} ${CFLAGS} ${LIBRARY_FLAGS} -c ${STDPWN_DIR}/colors.c -o ${STDPWN_DIR}/colors.o ${INCLUDES}
+	${CC} ${CFLAGS} ${LIBRARY_FLAGS} -c ${STDPWN_DIR}/colors.c -o ${STDPWN_DIR}/colors.o
 
 .cstring.o:
-	${CC} ${CFLAGS} ${LIBRARY_FLAGS} -c ${STDPWN_DIR}/cstring.c -o ${STDPWN_DIR}/cstring.o ${INCLUDES}
+	${CC} ${CFLAGS} ${LIBRARY_FLAGS} -c ${STDPWN_DIR}/cstring.c -o ${STDPWN_DIR}/cstring.o
 
 .error.o:
-	${CC} ${CFLAGS} ${LIBRARY_FLAGS} -c ${STDPWN_DIR}/error.c -o ${STDPWN_DIR}/error.o ${INCLUDES}
+	${CC} ${CFLAGS} ${LIBRARY_FLAGS} -c ${STDPWN_DIR}/error.c -o ${STDPWN_DIR}/error.o
 
 ########################################################################################################################
 #	System install
@@ -88,6 +81,8 @@ deinstall:
 ########################################################################################################################
 
 reinstall: deinstall install
+
+
 
 ########################################################################################################################
 #	clean
