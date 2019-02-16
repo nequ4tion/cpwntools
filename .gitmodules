@@ -1,0 +1,3 @@
+[submodule "extern/tiny-bignum-c"]
+	path = extern/tiny-bignum-c
+	url = git@github.com:kokke/tiny-bignum-c.git

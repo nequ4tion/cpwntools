@@ -76,7 +76,7 @@
   }
 
   static char *
-  cstr_from_cstr (const char *str)
+  cstr_from_nstr (const char *str)
   {
     size_t len;
     char *constructed_str;
@@ -171,7 +171,7 @@
     fwrite ("\n", 1, 1, stdout);
   }
 
-  const struct cstring_h cstr = { .from_cstr = cstr_from_cstr,
+  const struct cstring_h cstr = { .from_nstr = cstr_from_nstr,
                                   .new_str = cstr_new_str,
                                   .from_buf = cstr_from_buf,
                                   .strlen = cstr_strlen,

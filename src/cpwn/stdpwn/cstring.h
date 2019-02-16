@@ -23,7 +23,7 @@
      * @return char * A pointer to an usable string. Do not use free()!
      * Use dealloc() to deallocate it!
      */
-    char *(*from_cstr) (const char *);
+    char *(*from_nstr) (const char *);
     /**
      * @brief Creates a new string with the specified capacity.
      *
