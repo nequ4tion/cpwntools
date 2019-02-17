@@ -5,7 +5,7 @@ This library tries to implement a C version of pwntools that is portable and eas
 
 Functions are typically called by using provided namespaces like:
 
-`char *string = cstr.from_cstr("Hello");`
+`char *string = cstr.from_nstr("Hello");`
 
 For compilation of executables the flag `-lcpwn` is needed; if this library should be dynamically
 linked, `-lcpwndyn` can be used.
