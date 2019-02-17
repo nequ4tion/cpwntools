@@ -24,8 +24,8 @@ typedef int64_t i64;
 
 #if defined(__GNUC__) && defined(__x86_64__)
 #ifndef INT_128_DEFINED
-typedef signed int128_t __attribute__ ((mode (TI)));
-typedef unsigned uint128_t __attribute__ ((mode (TI)));
+typedef signed int128_t __attribute__((mode(TI)));
+typedef unsigned uint128_t __attribute__((mode(TI)));
 #define INT_128_DEFINED
 #endif /* INT_128_DEFINED */
 #endif /* __GNUC__ */
@@ -34,7 +34,7 @@ typedef unsigned uint128_t __attribute__ ((mode (TI)));
 typedef size_t sz_t;
 typedef ssize_t ssz_t;
 #elif defined(_WIN32)
-typedef void *sz_t;
+typedef void* sz_t;
 typedef i64 ssz_t;
 #endif /* unix */
 

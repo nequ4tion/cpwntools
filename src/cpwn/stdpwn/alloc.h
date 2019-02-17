@@ -16,12 +16,12 @@
 
 struct alloc_h
 {
-  void *(*malloc) (size_t);
-  void *(*zero_alloc) (size_t);
-  void *(*zero_allocarray) (size_t, size_t);
-  void *(*realloc) (void *, size_t);
-  void (*free) (void *);
-  void (*sfree) (void **);
+  void* (*malloc)(size_t);
+  void* (*zero_alloc)(size_t);
+  void* (*zero_allocarray)(size_t, size_t);
+  void* (*realloc)(void*, size_t);
+  void (*free)(void*);
+  void (*sfree)(void**);
 };
 
 extern const struct alloc_h alloc;

@@ -12,8 +12,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-__attribute__ ((__noreturn__)) void
-PANIC (const char *functionname, const char *filename,
-       const unsigned long long linenum);
+__attribute__((__noreturn__)) void
+PANIC(const char* functionname,
+      const char* filename,
+      const unsigned long long linenum);
 
 #endif /* ERROR_H */

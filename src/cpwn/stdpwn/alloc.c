@@ -9,53 +9,52 @@
 
 #include "alloc.h"
 #include "error.h"
-#include <stdlib.h>
 #include <stdio.h>
-
+#include <stdlib.h>
 
 static void
-alloc_out_of_memory (const char *funcname, int line)
+alloc_out_of_memory(const char* funcname, int line)
 {
-  PANIC (funcname, __FILE__, line);
+  PANIC(funcname, __FILE__, line);
 }
 
-#define CHECK_NULL_AND_PANIC(x, fname)      \
-  if (x == NULL)                            \
-    alloc_out_of_memory (fname, __LINE__);  \
+#define CHECK_NULL_AND_PANIC(x, fname)                                         \
+  if (x == NULL)                                                               \
+    alloc_out_of_memory(fname, __LINE__);                                      \
   return x
 
-static void *
-alloc_malloc (size_t size)
+static void*
+alloc_malloc(size_t size)
 {
-  void *ret = malloc (size);
-  CHECK_NULL_AND_PANIC (ret, "alloc_malloc");
+  void* ret = malloc(size);
+  CHECK_NULL_AND_PANIC(ret, "alloc_malloc");
 }
 
-static void *
-alloc_zero_alloc_array (size_t nmemb, size_t size)
+static void*
+alloc_zero_alloc_array(size_t nmemb, size_t size)
 {
-  void *ret = calloc (nmemb, size);
-  CHECK_NULL_AND_PANIC (ret, "alloc_zero_alloc_array");
+  void* ret = calloc(nmemb, size);
+  CHECK_NULL_AND_PANIC(ret, "alloc_zero_alloc_array");
 }
 
-static void *
-alloc_zero_alloc (size_t size)
+static void*
+alloc_zero_alloc(size_t size)
 {
-  void *ret = alloc_zero_alloc_array (size, sizeof (unsigned char));
-  CHECK_NULL_AND_PANIC (ret, "alloc_zero_alloc");
+  void* ret = alloc_zero_alloc_array(size, sizeof(unsigned char));
+  CHECK_NULL_AND_PANIC(ret, "alloc_zero_alloc");
 }
 
-static void *
-alloc_realloc (void *ptr, size_t size)
+static void*
+alloc_realloc(void* ptr, size_t size)
 {
-  printf ("ptr: %p\n", ptr);
-  void *ret = realloc (ptr, size);
-  printf ("ret: %p\n", ret);
-  CHECK_NULL_AND_PANIC (ret, "alloc_realloc");
+  printf("ptr: %p\n", ptr);
+  void* ret = realloc(ptr, size);
+  printf("ret: %p\n", ret);
+  CHECK_NULL_AND_PANIC(ret, "alloc_realloc");
 }
 
 static void
-alloc_free (void *ptr)
+alloc_free(void* ptr)
 {
   if (ptr == NULL) {
 #ifdef DEBUG
@@ -66,13 +65,13 @@ alloc_free (void *ptr)
     return;
 #endif /* DEBUG */
   }
-  free (ptr);
+  free(ptr);
 }
 
 static void
-alloc_sfree (void **ptr)
+alloc_sfree(void** ptr)
 {
-  alloc_free (*ptr);
+  alloc_free(*ptr);
   *ptr = NULL;
 }
 

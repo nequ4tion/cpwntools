@@ -17,9 +17,10 @@
 
 #ifndef boolean_defined
 #ifndef __cplusplus
-typedef enum {
-	false = 0,
-	true = !false
+typedef enum
+{
+  false = 0,
+  true = !false
 } bool_t;
 #define boolean_defined
 #endif /* __cplusplus */

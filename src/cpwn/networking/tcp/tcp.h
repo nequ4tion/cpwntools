@@ -23,7 +23,7 @@ struct tcp_h
    * @param port The port to connect to
    * @return sock_t Can be closed with tcp.close()
    */
-  sock_t (*remote) (const char *, const port_t);
+  sock_t (*remote)(const char*, const port_t);
   /**
    * @brief Sends the buffer to a host
    *
@@ -32,12 +32,13 @@ struct tcp_h
    * @param buflen The length of the buffer
    * @return Bytes sent
    */
-  ssz_t (*send) (sock_t *, const char *,
-                 const
+  ssz_t (*send)(sock_t*,
+                const char*,
+                const
 #ifdef unix
-                 sz_t
+                sz_t
 #elif defined(_WIN32)
-                 int
+                int
 #endif /* unix */
   );
   /**
@@ -45,7 +46,7 @@ struct tcp_h
    *
    * @param sock Pointer to a valid socket
    */
-  void (*close) (sock_t *);
+  void (*close)(sock_t*);
   /**
    * @brief Receives a number of bytes
    *
@@ -54,12 +55,13 @@ struct tcp_h
    * @param buflen The length of the buffer
    * @return Bytes received
    */
-  ssz_t (*recv) (sock_t *, char *,
-                 const
+  ssz_t (*recv)(sock_t*,
+                char*,
+                const
 #ifdef unix
-                 sz_t
+                sz_t
 #elif defined(_WIN32)
-                 int
+                int
 #endif /* unix */
   );
   /**
@@ -67,7 +69,7 @@ struct tcp_h
    *
    * @param sock The socket on which the connection should be shut down.
    */
-  int (*shutdown) (sock_t *);
+  int (*shutdown)(sock_t*);
   /**
    * @brief Creates a server socket.
    *
@@ -75,7 +77,7 @@ struct tcp_h
    * @param port Port to bind to
    * @return Server socket
    */
-  serv_sock_t (*server) (const char *, const port_t);
+  serv_sock_t (*server)(const char*, const port_t);
   /**
    * @brief Returns the next client
    *
@@ -83,14 +85,14 @@ struct tcp_h
    * @param listenlen Maximum length of the connection queue
    * @return Socket connected to a client
    */
-  sock_t (*next_client) (serv_sock_t *, const int);
+  sock_t (*next_client)(serv_sock_t*, const int);
   /**
    * @brief Checks if a socket is valid
    *
    * @param sock Pointer to a socket
    * @return true or false depending on validity of the socket
    */
-  bool_t (*valid) (const sock_t);
+  bool_t (*valid)(const sock_t);
 };
 
 extern const struct tcp_h tcp;

@@ -11,19 +11,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-__attribute__ ((__noreturn__)) void
-PANIC (const char *functionname, const char *filename,
-       const unsigned long long linenum)
+__attribute__((__noreturn__)) void
+PANIC(const char* functionname,
+      const char* filename,
+      const unsigned long long linenum)
 {
-  do
-    {
-      fprintf (stderr, "%s%s%s%s in %s%s%s at line %s%s%lld %s%sfailed.%s\n",
-               colors.styles.bold, colors.strong_fg.magenta, functionname,
-               colors.strong_fg.red, colors.strong_fg.yellow, filename,
-               colors.strong_fg.red, colors.styles.reset,
-               colors.normal_fg.blue, linenum, colors.strong_fg.red,
-               colors.styles.bold, colors.styles.reset);
-      exit (-1);
-    }
-  while (1); /* Keep the compiler happy. */
+  do {
+    fprintf(stderr,
+            "%s%s%s%s in %s%s%s at line %s%s%lld %s%sfailed.%s\n",
+            colors.styles.bold,
+            colors.strong_fg.magenta,
+            functionname,
+            colors.strong_fg.red,
+            colors.strong_fg.yellow,
+            filename,
+            colors.strong_fg.red,
+            colors.styles.reset,
+            colors.normal_fg.blue,
+            linenum,
+            colors.strong_fg.red,
+            colors.styles.bold,
+            colors.styles.reset);
+    exit(-1);
+  } while (1); /* Keep the compiler happy. */
 }

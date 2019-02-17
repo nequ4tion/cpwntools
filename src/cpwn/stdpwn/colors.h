@@ -11,58 +11,58 @@
 
 struct styles
 {
-  const char *reset;
-  const char *bold;
-  const char *underline;
-  const char *inverse;
+  const char* reset;
+  const char* bold;
+  const char* underline;
+  const char* inverse;
 };
 
 struct normal_fg_colors
 {
-  const char *black;
-  const char *red;
-  const char *green;
-  const char *yellow;
-  const char *blue;
-  const char *magenta;
-  const char *cyan;
-  const char *white;
+  const char* black;
+  const char* red;
+  const char* green;
+  const char* yellow;
+  const char* blue;
+  const char* magenta;
+  const char* cyan;
+  const char* white;
 };
 
 struct normal_bg_colors
 {
-  const char *black;
-  const char *red;
-  const char *green;
-  const char *yellow;
-  const char *blue;
-  const char *magenta;
-  const char *cyan;
-  const char *white;
+  const char* black;
+  const char* red;
+  const char* green;
+  const char* yellow;
+  const char* blue;
+  const char* magenta;
+  const char* cyan;
+  const char* white;
 };
 
 struct strong_fg_colors
 {
-  const char *black;
-  const char *red;
-  const char *green;
-  const char *yellow;
-  const char *blue;
-  const char *magenta;
-  const char *cyan;
-  const char *white;
+  const char* black;
+  const char* red;
+  const char* green;
+  const char* yellow;
+  const char* blue;
+  const char* magenta;
+  const char* cyan;
+  const char* white;
 };
 
 struct strong_bg_colors
 {
-  const char *black;
-  const char *red;
-  const char *green;
-  const char *yellow;
-  const char *blue;
-  const char *magenta;
-  const char *cyan;
-  const char *white;
+  const char* black;
+  const char* red;
+  const char* green;
+  const char* yellow;
+  const char* blue;
+  const char* magenta;
+  const char* cyan;
+  const char* white;
 };
 
 struct colors_h

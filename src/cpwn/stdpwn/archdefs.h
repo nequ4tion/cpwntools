@@ -39,38 +39,38 @@ enum ENDIAN
   SMALL
 };
 
-#if defined(__x86_64__) || defined(__x86_64) || defined(__amd64)              \
-    || defined(__amd64__) || defined(_M_AMD64) || defined(_M_X64)
+#if defined(__x86_64__) || defined(__x86_64) || defined(__amd64) ||            \
+  defined(__amd64__) || defined(_M_AMD64) || defined(_M_X64)
 #define X86_64_ARCH 1
 #endif
 
-#if defined(__i386__) || defined(i386) || defined(__i386) || defined(_M_IX86) \
-    || defined(_X86_)
+#if defined(__i386__) || defined(i386) || defined(__i386) ||                   \
+  defined(_M_IX86) || defined(_X86_)
 #define X86_ARCH 1
 #endif
 
-#if defined(ia64) || defined(__ia64) || defined(__ia64__)                     \
-    || defined(__IA64__) || defined(__itanium__) || defined(_M_IA64)
+#if defined(ia64) || defined(__ia64) || defined(__ia64__) ||                   \
+  defined(__IA64__) || defined(__itanium__) || defined(_M_IA64)
 #define IA64_ARCH 1
 #endif
 
-#if defined(_ARCH_PPC) || defined(_POWER) || defined(powerpc)                 \
-    || defined(__powerpc) || defined(__powerpc__) || defined(__PowerPC__)     \
-    || defined(__POWERPC__) || defined(PPC) || defined(__ppc__)               \
-    || defined(__PPC) || defined(__PPC__)
+#if defined(_ARCH_PPC) || defined(_POWER) || defined(powerpc) ||               \
+  defined(__powerpc) || defined(__powerpc__) || defined(__PowerPC__) ||        \
+  defined(__POWERPC__) || defined(PPC) || defined(__ppc__) ||                  \
+  defined(__PPC) || defined(__PPC__)
 #define PPC_ARCH 1
 #endif
 
-#if defined(_ARCH_PPC64) || defined(__powerpc64__) || defined(__ppc64)        \
-    || defined(__ppc64__) || defined(__PPC64__)
+#if defined(_ARCH_PPC64) || defined(__powerpc64__) || defined(__ppc64) ||      \
+  defined(__ppc64__) || defined(__PPC64__)
 #ifdef PPC_ARCH
 #undef PPC_ARCH
 #endif
 #define PPC64_ARCH 1
 #endif
 
-#if defined(sparc) || defined(__sparc) || defined(__sparc__)                  \
-    || defined(__sparc64__)
+#if defined(sparc) || defined(__sparc) || defined(__sparc__) ||                \
+  defined(__sparc64__)
 #define SPARC_ARCH 1
 #endif
 

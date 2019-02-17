@@ -19,8 +19,4 @@
 #include "cstring.h"
 #include "error.h"
 
-#ifdef __cplusplus
-//#include "cstring.hpp"
-#endif /* __cplusplus */
-
 #endif /* STDPWN_H */
