@@ -47,9 +47,7 @@ alloc_zero_alloc(size_t size)
 static void*
 alloc_realloc(void* ptr, size_t size)
 {
-  printf("ptr: %p\n", ptr);
   void* ret = realloc(ptr, size);
-  printf("ret: %p\n", ret);
   CHECK_NULL_AND_PANIC(ret, "alloc_realloc");
 }
 
