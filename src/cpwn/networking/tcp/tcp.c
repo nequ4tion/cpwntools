@@ -25,7 +25,11 @@ static sock_t
 tcp_remote(const char* hostname, const port_t port)
 {
   /* the socket that will be returned */
-  sock_t ret = { 0 };
+  sock_t ret = { 
+#ifdef unix
+    .sockfd = 0,
+#endif /* unix */ 
+    .is_valid = false };
 
 #ifdef unix
   /* used to store the result of an API request */
@@ -148,7 +152,11 @@ tcp_shutdown(sock_t* sock)
 static serv_sock_t
 tcp_server(const char* hostname, const port_t port)
 {
-  sock_t ret = { 0 };
+  sock_t ret = {
+#ifdef unix
+     .sockfd = 0, 
+#endif /* unix */
+     .is_valid = false };
 
 #ifdef unix
   /* used to store the result of an API request */
@@ -156,7 +164,7 @@ tcp_server(const char* hostname, const port_t port)
   struct sockaddr_in serv_addr;
   struct hostent* server;
   /* tracks if the socket has been openend */
-  bool_t sock_open;
+  bool_t sock_open = false;
   int optval = 1;
 
   ret.sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -206,7 +214,12 @@ FAILURE:
 static sock_t
 next_client(serv_sock_t* server, const int listenlen)
 {
-  sock_t ret = { 0 };
+  sock_t ret = {
+#ifdef unix     
+     .sockfd = 0,
+#endif /* unix */
+     .is_valid = false };
+
 #ifdef unix
   struct sockaddr_in client_addr;
   socklen_t clientlen;

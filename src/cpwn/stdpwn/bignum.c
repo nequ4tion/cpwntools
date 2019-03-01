@@ -14,7 +14,7 @@
 static bn_t
 bn_new(void)
 {
-  bn_t ret = { 0 };
+  bn_t ret = { { { 0 } } };
   bignum_init(&ret.inner);
   return ret;
 }
@@ -22,7 +22,7 @@ bn_new(void)
 static bn_t
 bn_from_int(uint64_t integer)
 {
-  bn_t ret = { 0 };
+  bn_t ret = { { { 0 } } };
   bignum_from_int(&ret.inner, integer);
   return ret;
 }
@@ -36,7 +36,7 @@ bn_to_int(bn_t* bignumber)
 static bn_t
 bn_from_nstr(char* string, int nbytes)
 {
-  bn_t ret = { 0 };
+  bn_t ret = { { { 0 } } };
   bignum_from_string(&ret.inner, string, nbytes);
   return ret;
 }
@@ -44,7 +44,7 @@ bn_from_nstr(char* string, int nbytes)
 static bn_t
 bn_from_cstr(char* cstring)
 {
-  bn_t ret = { 0 };
+  bn_t ret = { { { 0 } } };
   bignum_from_string(&ret.inner, cstring, cstr.strlen(cstring));
   return ret;
 }
