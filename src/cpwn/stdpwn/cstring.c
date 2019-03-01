@@ -12,7 +12,6 @@
 #include <stdio.h>
 #include <string.h>
 
-
 struct STRING_HEADER
 {
   size_t strlen;
@@ -171,6 +170,17 @@ cstr_print(const char* str)
   fwrite("\n", 1, 1, stdout);
 }
 
+static void
+cstr_fill_bytes(char* cstring, char byte, size_t len)
+{
+  struct STRING_HEADER* header;
+
+  cstr_resize(cstring, len);
+  memset((void*)cstring, (int)byte, len);
+  header = GET_HEADER(cstring);
+  header->strlen = len;
+}
+
 const struct cstring_h cstr = { .from_nstr = cstr_from_nstr,
                                 .new_str = cstr_new_str,
                                 .from_buf = cstr_from_buf,
@@ -182,4 +192,5 @@ const struct cstring_h cstr = { .from_nstr = cstr_from_nstr,
                                 .append = cstr_append,
                                 .strdup = cstr_strdup,
                                 .fprint = cstr_fprint,
-                                .print = cstr_print };
+                                .print = cstr_print,
+                                .fill_bytes = cstr_fill_bytes };

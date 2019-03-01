@@ -28,5 +28,5 @@ To remove it from the system `make deinstall` can be used.
 - [ ] Implement serial communications
 - [ ] Implement/Use a library with cryptographic primitives
 - [ ] Better build system
-- [ ] Add a bignum library (currently working on implementing a wrapper for [this](https://github.com/kokke/tiny-bignum-c))
+- [x] Add bignum support
 - [ ] Add documentation for each namespace

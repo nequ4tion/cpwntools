@@ -107,6 +107,11 @@ struct cstring_h
    * @param str The string to print.
    */
   void (*print)(const char*);
+  /**
+   * @brief Fills the string with `len` bytes of the kind `byte` and allocates
+   * new space, if necessary.
+   */
+  void (*fill_bytes)(char*, char, size_t);
 };
 
 extern const struct cstring_h cstr;

@@ -14,6 +14,7 @@
 #include "archdefs.h"
 
 #include "alloc.h"
+#include "bignum.h"
 #include "boolean.h"
 #include "colors.h"
 #include "cstring.h"
