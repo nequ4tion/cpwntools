@@ -108,6 +108,7 @@ pull_extern:
 
 clean:
 	rm -f $(shell find ./src -name \*.o) $(shell find ./src -name \*.o)
+	rm -f $(shell find ./src -name \*.so)
 	rm -f ${OUTFILE}
 	rm -rf ${BUILD_DIR}
 	make -C ${EXTERN_LIBS_DIR}/tiny-bignum-c clean
