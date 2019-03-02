@@ -29,4 +29,4 @@ To remove it from the system `make deinstall` can be used.
 - [ ] Implement/Use a library with cryptographic primitives
 - [ ] Better build system
 - [x] Add bignum support
-- [ ] Add documentation for each namespace
+- [x] Add documentation for each module
