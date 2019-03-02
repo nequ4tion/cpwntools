@@ -107,7 +107,7 @@ pull_extern:
 ########################################################################################################################
 
 clean:
-	rm -f $(shell find ./src -name \*.o) $(shell find ./src -name \*.o)
+	rm -f $(shell find ./src -name \*.o)
 	rm -f $(shell find ./src -name \*.so)
 	rm -f ${OUTFILE}
 	rm -rf ${BUILD_DIR}

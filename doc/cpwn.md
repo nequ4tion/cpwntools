@@ -383,7 +383,7 @@ Implements error handling.
 __attribute__((__noreturn__)) void
 PANIC(const char* functionname,
       const char* filename,
-      const unsigned long long linenum);
+      const unsigned long long linenum)
 ```
 Panics with an error message that contains the function name, the file name and the line number.
 
