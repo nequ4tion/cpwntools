@@ -83,6 +83,7 @@ install: stdpwn_object_files networking_object_files
 
 deinstall:
 	sudo rm -rf ${SYSTEM_INCLUDE_PATH}/cpwn ${SYSTEM_INCLUDE_PATH}/cpwn.h
+	sudo rm -rf ${SYSTEM_INCLUDE_PATH}/${EXTERN_LIBS_DIR}
 	sudo rm -f ${SYSTEM_LIB_PATH}/libcpwndyn.so
 	sudo rm -f ${SYSTEM_LIB_PATH}/libcpwn.a
 
