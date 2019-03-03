@@ -181,6 +181,16 @@ cstr_fill_bytes(char* cstring, char byte, size_t len)
   header->strlen = len;
 }
 
+static size_t
+cstr_capacity(char *str)
+{
+  struct STRING_HEADER* header;
+
+  header = GET_HEADER(str);
+
+  return header->capacity;
+}
+
 const struct cstring_h cstr = { .from_nstr = cstr_from_nstr,
                                 .new_str = cstr_new_str,
                                 .from_buf = cstr_from_buf,
@@ -193,4 +203,5 @@ const struct cstring_h cstr = { .from_nstr = cstr_from_nstr,
                                 .strdup = cstr_strdup,
                                 .fprint = cstr_fprint,
                                 .print = cstr_print,
-                                .fill_bytes = cstr_fill_bytes };
+                                .fill_bytes = cstr_fill_bytes,
+                                .capacity = cstr_capacity };

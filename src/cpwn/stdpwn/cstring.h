@@ -112,6 +112,11 @@ struct cstring_h
    * new space, if necessary.
    */
   void (*fill_bytes)(char*, char, size_t);
+  /**
+   * @brief Returns the capacity of the given string.
+   * @param The string of which the capacity will be returned.
+   */
+  size_t (*capacity)(char *);
 };
 
 extern const struct cstring_h cstr;

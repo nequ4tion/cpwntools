@@ -375,6 +375,12 @@ void cstr.fill_bytes(char* str, char byte, size_t len)
 ```
 Fills `str` with `len` bytes of kind `byte`.
 
+#### capacity
+```C
+size_t cstr.capacity(char *str)
+```
+Returns the capacity of the given string. NOT its length.
+
 ### error
 Implements error handling.
 
