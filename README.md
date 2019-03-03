@@ -30,3 +30,4 @@ To remove it from the system `make deinstall` can be used.
 - [ ] Better build system
 - [x] Add bignum support
 - [x] Add documentation for each module
+- [ ] Write tests for all modules
