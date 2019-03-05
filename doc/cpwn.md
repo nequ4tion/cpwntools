@@ -323,12 +323,10 @@ Returns the length of a cstring. (NOT ITS CAPACITY!!!)
 
 #### buftostr
 ```C
-char *cstr.buftostr(char* str, const char * buf, size_t buflen)
+void cstr.buftostr(char** str, const char * buf, size_t buflen)
 ```
 Copies a buf to an already allocated cstring. This lets your reuse cstrings.
 
-##### Remarks
-Do not use the argument `str` after the use of this function. Use the returned pointer instead, or better yet assign the argument to the return value of this function.
 
 #### dealloc
 ```C
@@ -338,12 +336,9 @@ Deallocates a string. No other function should be used to do that. `str` is poin
 
 #### resize
 ```C
-char *cstr.resize(char* str, size_t newsize)
+void cstr.resize(char** str, size_t newsize)
 ```
 Adjusts the capacity of a cstring `str` to be `newsize`.
-
-##### Remarks
-Do not use the argument `str` after the use of this function. Use the returned pointer instead, or better yet assign the argument to the return value of this function.
 
 #### append_data
 ```C
@@ -369,9 +364,15 @@ void cstr.fprint(FILE* fileptr, const char* str)
 ```
 Writes `str` to the `fileptr` I/O stream.
 
+#### print
+```C
+void cstr.print(const char* str)
+```
+Writes `str` to stdout.
+
 #### fill_bytes
 ```C
-void cstr.fill_bytes(char* str, char byte, size_t len)
+void cstr.fill_bytes(char** str, char byte, size_t len)
 ```
 Fills `str` with `len` bytes of kind `byte`.
 

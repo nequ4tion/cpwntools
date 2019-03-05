@@ -43,34 +43,30 @@ alloc_str(size_t capacity)
   return string_data;
 }
 
-static char*
-cstr_resize(char* str, size_t capacity)
+static void
+cstr_resize(char** str, size_t capacity)
 {
   struct STRING_HEADER* header;
 
-  header = GET_HEADER(str);
-  if (header->capacity > capacity)
-    return str;
-
-  header = (struct STRING_HEADER*)alloc.realloc(
-    (void*)header, capacity + sizeof(struct STRING_HEADER));
-  header->capacity = capacity;
-
-  return GET_STR(header);
+  header = GET_HEADER(*str);
+  if (header->capacity >= capacity)
+    return;
+  else {
+    header = (struct STRING_HEADER*)alloc.realloc(
+      (void*)header, capacity + sizeof(struct STRING_HEADER));
+    header->capacity = capacity;
+  }
 }
 
 static void
-copy_to_str(char* str, const char* buf, size_t buflen)
+copy_to_str(char** str, const char* buf, size_t buflen)
 {
   struct STRING_HEADER* header;
-  header = GET_HEADER(str);
 
-  if (header->capacity < buflen) {
-    cstr_resize(str, buflen);
-    header = GET_HEADER(str);
-  }
+  cstr_resize(str, buflen);
+  header = GET_HEADER(*str);
 
-  memcpy(str, buf, buflen);
+  memcpy(*str, buf, buflen);
   header->strlen = buflen;
 }
 
@@ -82,7 +78,7 @@ cstr_from_nstr(const char* str)
 
   len = strlen(str);
   constructed_str = alloc_str(len);
-  copy_to_str(constructed_str, str, len);
+  copy_to_str(&constructed_str, str, len);
   return constructed_str;
 }
 
@@ -98,7 +94,7 @@ cstr_from_buf(const char* buf, size_t buflen)
   char* str;
 
   str = alloc_str(buflen);
-  copy_to_str(str, buf, buflen);
+  copy_to_str(&str, buf, buflen);
   return str;
 }
 
@@ -109,7 +105,7 @@ cstr_strlen(const char* str)
 }
 
 static void
-cstr_buftostr(char* str, const char* buf, size_t buflen)
+cstr_buftostr(char** str, const char* buf, size_t buflen)
 {
   copy_to_str(str, buf, buflen);
 }
@@ -134,10 +130,10 @@ cstr_append_data(char** str, const char* buf, size_t buflen)
   size_t new_capacity = header->strlen + buflen;
   char* strptr = *str;
 
-  if (header->capacity < new_capacity)
-    strptr = cstr_resize(*str, new_capacity);
+  cstr_resize(str, new_capacity);
 
   header = GET_HEADER(strptr);
+  /* offset after the last element of the string, since we start counting from 0 */
   memcpy(&(strptr[header->strlen]), &buf[0], buflen);
   header->strlen = new_capacity;
   *str = strptr;
@@ -153,7 +149,7 @@ static char*
 cstr_strdup(const char* str)
 {
   char* ret = alloc_str((GET_HEADER(str))->capacity);
-  copy_to_str(ret, str, (GET_HEADER(str))->strlen);
+  copy_to_str(&ret, str, (GET_HEADER(str))->strlen);
   return ret;
 }
 
@@ -171,13 +167,13 @@ cstr_print(const char* str)
 }
 
 static void
-cstr_fill_bytes(char* cstring, char byte, size_t len)
+cstr_fill_bytes(char** cstring, char byte, size_t len)
 {
   struct STRING_HEADER* header;
 
   cstr_resize(cstring, len);
-  memset((void*)cstring, (int)byte, len);
-  header = GET_HEADER(cstring);
+  memset((void*)*cstring, (int)byte, len);
+  header = GET_HEADER(*cstring);
   header->strlen = len;
 }
 

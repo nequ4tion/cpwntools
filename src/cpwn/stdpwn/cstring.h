@@ -53,7 +53,7 @@ struct cstring_h
    * @param str The string to copy into.
    * @param buf The buffer that will be copied from.
    */
-  void (*buftostr)(char*, const char*, size_t);
+  void (*buftostr)(char**, const char*, size_t);
   /**
    * @brief Deallocates a string. No other function should be used to do
    * that.
@@ -70,7 +70,7 @@ struct cstring_h
    * @return char * Returns the newly allocated string. (Dismiss the old str
    * pointer, DO NOT USE IT!!!)
    */
-  char* (*resize)(char*, size_t);
+  void (*resize)(char**, size_t);
   /**
    * @brief Appends a buffer of specified length to the string.
    *
@@ -111,7 +111,7 @@ struct cstring_h
    * @brief Fills the string with `len` bytes of the kind `byte` and allocates
    * new space, if necessary.
    */
-  void (*fill_bytes)(char*, char, size_t);
+  void (*fill_bytes)(char**, char, size_t);
   /**
    * @brief Returns the capacity of the given string.
    * @param The string of which the capacity will be returned.

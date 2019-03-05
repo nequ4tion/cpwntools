@@ -63,7 +63,7 @@ bn_to_cstr(bn_t* bignumber)
 
   /* adding +1 for trailing NUL-byte and another +1 to make the number even */
   char* ret = cstr.new_str(max_bn_hex_len + 2);
-  cstr.fill_bytes(ret, '\0', max_bn_hex_len + 2);
+  cstr.fill_bytes(&ret, '\0', max_bn_hex_len + 2);
   bignum_to_string(&bignumber->inner, ret, cstr.strlen(ret));
   return ret;
 }
