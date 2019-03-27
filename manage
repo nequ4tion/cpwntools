@@ -1,0 +1,73 @@
+#!/bin/bash
+
+CPWNTOOLS_DIR=`dirname "${BASH_SOURCE[0]}"`
+
+SUDO_PROGRAM=sudo
+SYSTEM_LIB_PATH=/usr/lib
+SYSTEM_INCLUDE_PATH=/usr/include
+EXTERN_LIBS_DIR=cpwn_extern
+
+set -e
+
+function main() {
+    if [ "$1" == "compile" ]; then
+        if [ ! -f ${CPWNTOOLS_DIR}/${EXTERN_LIBS_DIR}/tiny-bignum-c/bn.c ]; then
+            git submodule update --init
+        fi
+        mkdir -p ${CPWNTOOLS_DIR}/build
+        cd build
+        cmake ${CPWNTOOLS_DIR}
+        make
+        cd -
+    elif [ "$1" == "install" ]; then
+        echo "Installing..."
+        ${BASH_SOURCE[0]} compile
+        ${SUDO_PROGRAM} cp ${CPWNTOOLS_DIR}/build/build/lib/libcpwn.a ${SYSTEM_LIB_PATH}
+        ${SUDO_PROGRAM} cp ${CPWNTOOLS_DIR}/build/build/lib/libcpwndyn.so ${SYSTEM_LIB_PATH}
+        ${SUDO_PROGRAM} chmod 755 ${SYSTEM_LIB_PATH}/libcpwndyn.so
+        ${SUDO_PROGRAM} ldconfig -v -n ${SYSTEM_LIB_PATH} | grep cpwndyn
+        cd ${CPWNTOOLS_DIR}
+        ${SUDO_PROGRAM} find ${EXTERN_LIBS_DIR} -name '*.h' -exec cp --parents \{\} ${SYSTEM_INCLUDE_PATH} \;
+        cd -
+        cd ${CPWNTOOLS_DIR}/src
+        ${SUDO_PROGRAM} find . -name '*.h' -exec cp --parents \{\} ${SYSTEM_INCLUDE_PATH} \;
+        cd -
+        echo "Successfully installed cpwntools."
+    elif [ "$1" == "uninstall" ]; then
+        dialog --yesno "Are you sure, you want to uninstall cpwntools?" 20 60
+        answer=$?
+        if [ ${answer} == 0 ]; then
+            echo "Uninstalling..."
+            ${SUDO_PROGRAM} rm -rf ${SYSTEM_INCLUDE_PATH}/cpwn ${SYSTEM_INCLUDE_PATH}/cpwn.h
+	        ${SUDO_PROGRAM} rm -rf ${SYSTEM_INCLUDE_PATH}/${EXTERN_LIBS_DIR}
+	        ${SUDO_PROGRAM} rm -f ${SYSTEM_LIB_PATH}/libcpwndyn.so
+	        ${SUDO_PROGRAM} rm -f ${SYSTEM_LIB_PATH}/libcpwn.a
+            echo "cpwntools has been sucessfully uninstalled."
+        else
+            echo "Exiting..."
+            exit 0
+        fi
+    elif [ "$1" == "update" ]; then
+        git -C ${CPWNTOOLS_DIR} pull
+        git submodule update --init
+    elif [ "$1" == "clean" ]; then
+        make -C ${CPWNTOOLS_DIR}/build clean
+    elif [ "$1" == "format" ]; then
+        for i in ".h" ".c"; do
+            for j in `find ${CPWNTOOLS_DIR}/src -name \*"${i}"`; do
+                echo "Formatting $j..."
+                clang-format -style=Mozilla -i "$j"
+            done
+        done
+    else
+        echo "Usage: ${BASH_SOURCE[0]} argument"
+        echo "compile   Compiles the library."
+        echo "install   Installs the library to the system."
+        echo "uninstall Uninstalls the library from the system."
+        echo "update    Pulls the latest source from the repository."
+        echo "clean     Removes all built binaries."
+        echo "format    Formats the code."
+    fi
+}
+
+main "$@"
