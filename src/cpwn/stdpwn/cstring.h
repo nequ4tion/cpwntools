@@ -3,7 +3,7 @@
 
 /* ***********************************************************
  * NAME: cstring.h
- * PURPOSE: Define non-nul-terminated strings in C
+ * PURPOSE: Define non-NUL-terminated strings in C
  *************************************************************/
 
 #ifndef CSTRING_H
@@ -14,6 +14,11 @@
 #include <stdio.h>
 #include <string.h>
 
+/**
+ * @brief Implements non-NUL-terminated strings in C.
+ * Functions in this module can be called by
+ * invoking cstr.`functionname`.
+ */
 struct cstring_h
 {
   /**
@@ -50,7 +55,7 @@ struct cstring_h
    * @brief Copies a buf to an already allocated string. This lets your reuse
    * strings.
    *
-   * @param str The string to copy into.
+   * @param str A pointer to the string to copy into.
    * @param buf The buffer that will be copied from.
    */
   void (*buftostr)(char**, const char*, size_t);
@@ -65,7 +70,7 @@ struct cstring_h
   /**
    * @brief Adjusts the capacity.
    *
-   * @param str The string to resize.
+   * @param str A pointer to the string to resize.
    * @param capacity The new capacity.
    * @return char * Returns the newly allocated string. (Dismiss the old str
    * pointer, DO NOT USE IT!!!)
@@ -116,7 +121,7 @@ struct cstring_h
    * @brief Returns the capacity of the given string.
    * @param The string of which the capacity will be returned.
    */
-  size_t (*capacity)(char *);
+  size_t (*capacity)(char*);
 };
 
 extern const struct cstring_h cstr;

@@ -14,6 +14,11 @@
 
 typedef struct SOCKET_TYPE serv_sock_t;
 
+/**
+ * @brief A module implementing tcp sockets.
+ * Functions in this module can be called by
+ * invoking tcp.`functionname`
+ */
 struct tcp_h
 {
   /**

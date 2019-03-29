@@ -17,10 +17,13 @@
 
 #ifndef boolean_defined
 #ifndef __cplusplus
+/**
+ * @brief Defines a boolean type.
+ */
 typedef enum
 {
-  false = 0,
-  true = !false
+  false = 0, /**< Indicates that something is not true. */
+  true = !false /**< Indicates that something is not false. */
 } bool_t;
 #define boolean_defined
 #endif /* __cplusplus */
