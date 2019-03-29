@@ -15,8 +15,8 @@ function main() {
             git submodule update --init
         fi
         mkdir -p ${CPWNTOOLS_DIR}/build
-        cd build
-        cmake ${CPWNTOOLS_DIR}
+        cd ${CPWNTOOLS_DIR}/build
+        cmake ..
         make
         cd -
     elif [ "$1" == "install" ]; then
