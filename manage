@@ -52,6 +52,29 @@ function main() {
         git submodule update --init
     elif [ "$1" == "clean" ]; then
         make -C ${CPWNTOOLS_DIR}/build clean
+        rm -rf ${CPWNTOOLS_DIR}/html
+        rm -rf ${CPWNTOOLS_DIR}/latex
+    elif [ "$1" == "doc" ]; then
+        doxygen ${CPWNTOOLS_DIR}/Doxyfile
+    elif [ "$1" == "opendocs" ]; then
+        ${CPWNTOOLS_DIR}/manage doc
+        python -m http.server 5000 --bind 127.0.0.1 --directory ${CPWNTOOLS_DIR}/html/ &
+        echo $! > ${CPWNTOOLS_DIR}/.docserverpid
+        if which xdg-open > /dev/null
+        then
+            xdg-open "http://127.0.0.1:5000"
+        elif which gnome-open > /dev/null
+        then
+            gnome-open "http://127.0.0.1:5000"
+        fi
+    elif [ "$1" == "killdocserver" ]; then
+        if [ -f ${CPWNTOOLS_DIR}/.docserverpid ]; then
+            kill `cat ${CPWNTOOLS_DIR}/.docserverpid`
+            rm ${CPWNTOOLS_DIR}/.docserverpid
+        else
+            echo "Cannot find ${CPWNTOOLS_DIR}/.docserverpid."
+            exit 1
+        fi
     elif [ "$1" == "format" ]; then
         for i in ".h" ".c"; do
             for j in `find ${CPWNTOOLS_DIR}/src -name \*"${i}"`; do
@@ -61,12 +84,16 @@ function main() {
         done
     else
         echo "Usage: ${BASH_SOURCE[0]} argument"
-        echo "compile   Compiles the library."
-        echo "install   Installs the library to the system."
-        echo "uninstall Uninstalls the library from the system."
-        echo "update    Pulls the latest source from the repository."
-        echo "clean     Removes all built binaries."
-        echo "format    Formats the code."
+        echo "compile          Compiles the library."
+        echo "install          Installs the library to the system."
+        echo "uninstall        Uninstalls the library from the system."
+        echo "update           Pulls the latest source from the repository."
+        echo "clean            Removes all built binaries."
+        echo "doc              Builds documentation for the library."
+        echo "opendocs         Starts a python server and opens a webbrowser"
+        echo "                 to view the documentation."
+        echo "killdocsserver   Kills the python server started by opendocs."
+        echo "format           Formats the code."
     fi
 }
 

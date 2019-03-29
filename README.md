@@ -11,7 +11,10 @@ Functions are typically called by using provided namespaces like:
 For compilation of executables the flag `-lcpwn` is needed; if this library should be dynamically
 linked, `-lcpwndyn` can be used. This only works when the library has been installed globally.
 
-Documentation on all implemented modules can be built using Doxygen. This can be done by invoking `doxygen Doxyfile` in the projects root directory.
+Documentation on all implemented modules can be built using Doxygen. 
+This can be done by invoking `./manage doc` in the projects root directory.
+To view it one can use `./manage opendocs` which will start a python server bound to localhost on the port 5000. A webbrowser should open automatically.
+The python server can be killed by invoking `./manage killdocserver`.
 
 # Installation
 The library can be installed on the system globally by invoking `./manage install`.
