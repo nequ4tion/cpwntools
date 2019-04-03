@@ -92,7 +92,7 @@ function main() {
         echo "doc              Builds documentation for the library."
         echo "opendocs         Starts a python server and opens a webbrowser"
         echo "                 to view the documentation."
-        echo "killdocsserver   Kills the python server started by opendocs."
+        echo "killdocserver    Kills the python server started by opendocs."
         echo "format           Formats the code."
     fi
 }
