@@ -1,4 +1,6 @@
 # cpwntools
+<img src="cpwnlogo.png" alt="drawing" width="200" heigt="200"/>
+
 This library implements a C version of the pwntools library for writing kernel exploits and
 creating exploits that require a high performance.
 
