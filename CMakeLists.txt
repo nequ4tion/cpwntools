@@ -12,7 +12,7 @@ set(COMPILER_WARNING_FLAGS -Werror -pedantic -Wall -Wextra)
 set(COMPILER_OPTIMIZATION_FLAGS -O2)
 set(COMPILER_SAFETY_FLAGS -fstack-protector-all)
 
-set(STDPWN_FILES 
+set(STDPWN_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/cpwn/stdpwn/alloc.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/cpwn/stdpwn/error.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/cpwn/stdpwn/bignum.c"
@@ -58,7 +58,7 @@ target_include_directories(cpwn PRIVATE
     ${NETWORKING_INCLUDES}
 )
 
-
+add_definitions(-DCOMPILE_TIME)
 target_compile_options(cpwn PRIVATE ${COMPILER_WARNING_FLAGS} ${COMPILER_SAFETY_FLAGS} ${COMPILER_OPTIMIZATION_FLAGS})
 target_compile_options(cpwnnetworking PRIVATE ${COMPILER_WARNING_FLAGS} ${COMPILER_SAFETY_FLAGS} ${COMPILER_OPTIMIZATION_FLAGS})
 target_compile_options(stdpwn PRIVATE ${COMPILER_WARNING_FLAGS} ${COMPILER_SAFETY_FLAGS} ${COMPILER_OPTIMIZATION_FLAGS})
