@@ -22,6 +22,7 @@ function(pull_extern_git name url)
     if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/cpwn_extern/${name})
         execute_process(
             COMMAND ${GIT_EXECUTABLE} clone --recursive ${url} ${name}
+            COMMAND ${GIT_EXECUTABLE} submodule update --remote
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/cpwn_extern
         )
     else()
