@@ -19,9 +19,6 @@ function main() {
             exit 1
         fi
         set -e
-        if [ ! -f ${CPWNTOOLS_DIR}/${EXTERN_LIBS_DIR}/tiny-bignum-c/bn.c ]; then
-            git submodule update --init
-        fi
         mkdir -p ${CPWNTOOLS_DIR}/build
         cd ${CPWNTOOLS_DIR}/build
         cmake ..
@@ -57,7 +54,6 @@ function main() {
         fi
     elif [ "$1" == "update" ]; then
         git -C ${CPWNTOOLS_DIR} pull
-        git submodule update --init
     elif [ "$1" == "clean" ]; then
         echo "Checking if gmake exists..."
         set +e
@@ -86,10 +82,10 @@ function main() {
         echo $! > ${CPWNTOOLS_DIR}/.docserverpid
         if which xdg-open > /dev/null
         then
-            xdg-open "http://127.0.0.1:5000"
+            xdg-open "http://127.0.0.1:5000/annotated.html"
         elif which gnome-open > /dev/null
         then
-            gnome-open "http://127.0.0.1:5000"
+            gnome-open "http://127.0.0.1:5000/annotated.html"
         fi
     elif [ "$1" == "killdocserver" ]; then
         if [ -f ${CPWNTOOLS_DIR}/.docserverpid ]; then

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.14.1)
 set(CMAKE_C_STANDARD 11)
 
 project(cpwntools)
@@ -12,6 +12,31 @@ set(COMPILER_WARNING_FLAGS -Werror -pedantic -Wall -Wextra)
 set(COMPILER_OPTIMIZATION_FLAGS -O2)
 set(COMPILER_SAFETY_FLAGS -fstack-protector-all)
 
+find_package(Git)
+if(NOT Git_FOUND)
+    message(FATAL_ERROR "Need git to clone dependencies.")
+endif()
+
+function(pull_extern_git name url)
+
+    if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/cpwn_extern/${name})
+        execute_process(
+            COMMAND ${GIT_EXECUTABLE} clone --recursive ${url} ${name}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/cpwn_extern
+        )
+    else()
+        # directory exists, attempting to pull
+        execute_process(
+            COMMAND ${GIT_EXECUTABLE} -C ${name} pull origin master
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/cpwn_extern
+        )
+    endif()
+
+endfunction()
+
+pull_extern_git(tiny-bignum-c https://github.com/kokke/tiny-bignum-c)
+pull_extern_git(libssh https://git.libssh.org/projects/libssh.git)
+
 set(STDPWN_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/cpwn/stdpwn/alloc.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/cpwn/stdpwn/error.c"
@@ -20,6 +45,7 @@ set(STDPWN_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/cpwn/stdpwn/cstring.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/cpwn_extern/tiny-bignum-c/bn.c"
 )
+
 
 set(STDPWN_INCLUDES
     "/usr/include"
