@@ -13,26 +13,26 @@ set(COMPILER_OPTIMIZATION_FLAGS -O2)
 set(COMPILER_SAFETY_FLAGS -fstack-protector-all)
 
 set(STDPWN_FILES 
-    "src/cpwn/stdpwn/alloc.c"
-    "src/cpwn/stdpwn/error.c"
-    "src/cpwn/stdpwn/bignum.c"
-    "src/cpwn/stdpwn/colors.c"
-    "src/cpwn/stdpwn/cstring.c"
-    "cpwn_extern/tiny-bignum-c/bn.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/cpwn/stdpwn/alloc.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/cpwn/stdpwn/error.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/cpwn/stdpwn/bignum.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/cpwn/stdpwn/colors.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/cpwn/stdpwn/cstring.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/cpwn_extern/tiny-bignum-c/bn.c"
 )
 
 set(STDPWN_INCLUDES
     "/usr/include"
-    "src/cpwn/stdpwn"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/cpwn/stdpwn"
 )
 
 set(NETWORKING_FILES
-    "src/cpwn/networking/tcp/tcp.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/cpwn/networking/tcp/tcp.c"
 )
 
 set(NETWORKING_INCLUDES
-    "src/cpwn/networking"
-    "src/cpwn/networking/tcp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/cpwn/networking"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/cpwn/networking/tcp"
 )
 
 add_library(cpwn STATIC
