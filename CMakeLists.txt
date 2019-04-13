@@ -46,6 +46,7 @@ set(STDPWN_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/cpwn/stdpwn/colors.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/cpwn/stdpwn/cstring.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/cpwn_extern/tiny-bignum-c/bn.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/cpwn/stdpwn/stdpwn.c"
 )
 
 
