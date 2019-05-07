@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 CPWNTOOLS_DIR=`dirname "${BASH_SOURCE[0]}"`
-
+CPWNTOOLS_DIR=$(/usr/bin/env python2.7 -c "import os; print os.path.abspath('${CPWNTOOLS_DIR}')")
 SUDO_PROGRAM=sudo
 SYSTEM_LIB_PATH=/usr/lib
 SYSTEM_INCLUDE_PATH=/usr/include
@@ -30,12 +30,18 @@ function main() {
         ${SUDO_PROGRAM} cp ${CPWNTOOLS_DIR}/build/build/lib/libcpwn.a ${SYSTEM_LIB_PATH}
         ${SUDO_PROGRAM} cp ${CPWNTOOLS_DIR}/build/build/lib/libcpwndyn.so ${SYSTEM_LIB_PATH}
         ${SUDO_PROGRAM} chmod 755 ${SYSTEM_LIB_PATH}/libcpwndyn.so
-        ${SUDO_PROGRAM} ldconfig -v -n ${SYSTEM_LIB_PATH} | grep cpwndyn
+        #${SUDO_PROGRAM} ldconfig -v -R ${SYSTEM_LIB_PATH} | grep cpwndyn
         cd ${CPWNTOOLS_DIR}
-        ${SUDO_PROGRAM} find ${EXTERN_LIBS_DIR} -name '*.h' -exec cp --parents \{\} ${SYSTEM_INCLUDE_PATH} \;
+        #${SUDO_PROGRAM} find ${EXTERN_LIBS_DIR} -name '*.h' -exec ${CPWNTOOLS_DIR}/copy_directory.py --infile \{\} --outdir ${SYSTEM_INCLUDE_PATH} \;
+	for i in $(find ${EXTERN_LIBS_DIR} -name '*.h'); do
+		${SUDO_PROGRAM} ${CPWNTOOLS_DIR}/copy_directory.py --infile $i --outdir ${SYSTEM_INCLUDE_PATH} --extern yes
+	done
         cd -
         cd ${CPWNTOOLS_DIR}/src
-        ${SUDO_PROGRAM} find . -name '*.h' -exec cp --parents \{\} ${SYSTEM_INCLUDE_PATH} \;
+	#${SUDO_PROGRAM} find . -name '*.h' -exec ${CPWNTOOLS_DIR}/copy_directory.py --infile {} --outdir ${SYSTEM_INCLUDE_PATH} \;
+	for i in $(find . -name '*.h'); do
+		${SUDO_PROGRAM} ${CPWNTOOLS_DIR}/copy_directory.py --infile $i --outdir ${SYSTEM_INCLUDE_PATH} --extern no
+	done
         cd -
         echo "Successfully installed cpwntools."
     elif [ "$1" == "uninstall" ]; then

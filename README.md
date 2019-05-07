@@ -22,3 +22,6 @@ The python server can be killed by invoking `./manage killdocserver`.
 The library can be installed on the system globally by invoking `./manage install`.
 To remove it from the system `./manage uninstall` can be used.
 
+# Working systems
+This library has been tested on Arch Linux and OpenBSD, but might work on other
+systems as well.
