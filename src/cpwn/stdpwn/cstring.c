@@ -28,11 +28,12 @@ alloc_str(size_t capacity)
   struct STRING_HEADER* header;
   char* string_data;
 
-  /* check for integer overflow */
+  header = (struct STRING_HEADER*)alloc.zero_alloc(full_size);
+
+  /* check for integer overflow, just in case */
   if (full_size < capacity)
     return NULL;
 
-  header = (struct STRING_HEADER*)alloc.zero_alloc(full_size);
 
   header->strlen = 0;
   header->capacity = capacity;
@@ -55,6 +56,7 @@ cstr_resize(char** str, size_t capacity)
     header = (struct STRING_HEADER*)alloc.realloc(
       (void*)header, capacity + sizeof(struct STRING_HEADER));
     header->capacity = capacity;
+    *str = GET_STR(header);
   }
 }
 
@@ -128,9 +130,11 @@ cstr_append_data(char** str, const char* buf, size_t buflen)
 {
   struct STRING_HEADER* header = GET_HEADER(*str);
   size_t new_capacity = header->strlen + buflen;
-  char* strptr = *str;
+  char* strptr;
 
   cstr_resize(str, new_capacity);
+
+  strptr = *str;
 
   header = GET_HEADER(strptr);
   /* offset after the last element of the string, since we start counting from 0 */
@@ -178,7 +182,7 @@ cstr_fill_bytes(char** cstring, char byte, size_t len)
 }
 
 static size_t
-cstr_capacity(char *str)
+cstr_capacity(char* str)
 {
   struct STRING_HEADER* header;
 
