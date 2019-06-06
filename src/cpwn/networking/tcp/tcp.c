@@ -442,7 +442,7 @@ tcp_server(const char* hostname, const port_t port)
     hints.ai_protocol = IPPROTO_TCP;
     hints.ai_flags = AI_PASSIVE;
 
-    /* getaddrinfo of the hostname and port with specified protocol information from hitns */
+    /* getaddrinfo of the hostname and port with specified protocol information from hints */
     winapi_result = getaddrinfo(hostname, ascii_port, &hints, &result);
 
     if (winapi_result != 0) {
