@@ -6,6 +6,8 @@
  * PURPOSE: Define new types
  *************************************************************/
 
+/*! \file stdtypes.h */
+
 #ifndef STDTYPES_H
 #define STDTYPES_H
 
@@ -34,7 +36,7 @@ typedef unsigned uint128_t __attribute__((mode(TI)));
 typedef size_t sz_t;
 typedef ssize_t ssz_t;
 #elif defined(_WIN32)
-typedef void* sz_t;
+typedef size_t sz_t;
 typedef i64 ssz_t;
 #endif /* unix */
 

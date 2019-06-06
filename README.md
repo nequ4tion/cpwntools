@@ -23,5 +23,5 @@ The library can be installed on the system globally by invoking `./manage instal
 To remove it from the system `./manage uninstall` can be used.
 
 # Working systems
-This library has been tested on Arch Linux and OpenBSD, but might work on other
+This library has been tested on Arch Linux, Microsoft Windows 10 and OpenBSD, but might work on other
 systems as well.

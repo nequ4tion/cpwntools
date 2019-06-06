@@ -9,6 +9,11 @@
 #ifndef COLORS_H
 #define COLORS_H
 
+/* for some reason both gcc and the Microsoft Optimizing compiler complain when
+ * is missing
+ */
+;
+
 struct styles
 {
   const char* reset;

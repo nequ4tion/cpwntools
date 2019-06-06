@@ -19,9 +19,12 @@
  * @param filename The name of the current file.
  * @param linenum The current line in which this function gets called.
  */
-__attribute__((__noreturn__)) void
-PANIC(const char* functionname,
-      const char* filename,
+#ifndef _WIN32
+__attribute__((__noreturn__))
+#endif /* _WIN32 */
+void
+PANIC(const char *functionname,
+      const char *filename,
       const unsigned long long linenum);
 
 #endif /* ERROR_H */

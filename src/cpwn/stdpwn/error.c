@@ -11,12 +11,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-__attribute__((__noreturn__)) void
-PANIC(const char* functionname,
-      const char* filename,
+#ifndef _WIN32
+__attribute__((__noreturn__))
+#endif /* _WIN32 */
+void
+PANIC(const char *functionname,
+      const char *filename,
       const unsigned long long linenum)
 {
-  do {
+  do
+  {
     fprintf(stderr,
             "%s%s%s%s in %s%s%s at line %s%s%lld %s%sfailed.%s\n",
             colors.styles.bold,

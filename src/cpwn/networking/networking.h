@@ -18,7 +18,10 @@
 #include <sys/types.h>
 #include <unistd.h>
 #elif defined(_WIN32)
-/* TODO: Implement windows */
+#define WIN32_LEAN_AND_MEAN
+
+#include <windows.h>
+#include <winsock2.h>
 #endif /* unix */
 
 #include "../stdpwn/stdpwn.h"
@@ -31,7 +34,7 @@ typedef struct SOCKET_TYPE
   int sockfd;
 
 #elif defined(_WIN32)
-  /* TODO: Implement windows */
+ SOCKET sock;
 #endif /* unix */
   bool_t is_valid;
 } sock_t;
