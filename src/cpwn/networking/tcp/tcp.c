@@ -21,19 +21,20 @@
 #elif defined(_WIN32)
 #define WIN32_LEAN_AND_MEAN
 #include "../../stdpwn/stdtypes.h"
+#include <inttypes.h>
+#include <stdlib.h>
 #include <windows.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
-#include <stdlib.h>
-#include <inttypes.h>
 
-#pragma comment (lib, "Ws2_32.lib")
-#pragma comment (lib, "Mswsock.lib")
-#pragma comment (lib, "AdvApi32.lib")
+#pragma comment(lib, "Ws2_32.lib")
+#pragma comment(lib, "Mswsock.lib")
+#pragma comment(lib, "AdvApi32.lib")
 #endif /* unix */
 
 #ifdef _WIN32
-struct win_sock_status {
+struct win_sock_status
+{
   bool_t initialized;
   sz_t number_of_opened_sockets;
   WSADATA wsadata;
@@ -41,20 +42,21 @@ struct win_sock_status {
 static struct win_sock_status winsock_status = { .initialized = false,
                                                  .number_of_opened_sockets = 0,
                                                  .wsadata = { 0 } };
-static HANDLE winsock_status_lock = NULL; 
+static HANDLE winsock_status_lock = NULL;
 #endif /* _WIN32 */
 
 static sock_t
 tcp_remote(const char* hostname, const port_t port)
 {
   /* the socket that will be returned */
-  sock_t ret = { 
+  sock_t ret = {
 #ifdef unix
     .sockfd = 0,
 #elif defined(_WIN32)
     .sock = INVALID_SOCKET,
-#endif /* unix */ 
-    .is_valid = false };
+#endif /* unix */
+    .is_valid = false
+  };
 
 #ifdef unix
   /* used to store the result of an API request */
@@ -100,40 +102,44 @@ tcp_remote(const char* hostname, const port_t port)
     goto FAILURE;
 
 #elif defined(_WIN32)
-  struct addrinfo *result = NULL,
-                  /* the ptr will be used later to loop through all possible connections */
-                  *ptr = NULL,
-                  /* hints will be initialized with 0 before use later on */
-                  hints;
+  struct addrinfo
+    *result = NULL,
+    /* the ptr will be used later to loop through all possible connections */
+    *ptr = NULL,
+    /* hints will be initialized with 0 before use later on */
+    hints;
   int winapi_result = 0;
   DWORD winsock_status_mutex_lock_result;
   /* tracks if addrinfo *result has been initialized */
   bool_t result_initialized;
-  /* the windows API for some reason demands port numbers encoded in ASCII represenation;
-   * 65535 is the highest port number possible (2^16 - 1 is the highest 16-bit unsigned integer) with an ASCII
-   * encoding length of 5 characters, therefore 6 bytes (including the NUL-terminator) are needed to store 
-   * a port number for the windows API
+  /* the windows API for some reason demands port numbers encoded in ASCII
+   * represenation; 65535 is the highest port number possible (2^16 - 1 is the
+   * highest 16-bit unsigned integer) with an ASCII encoding length of 5
+   * characters, therefore 6 bytes (including the NUL-terminator) are needed to
+   * store a port number for the windows API
    */
   char ascii_port[6] = { 0 };
 
   if (winsock_status_lock == NULL) {
     /* winsock_status_lock is not initialized yet, initializing */
-    winsock_status_lock = CreateMutex(NULL, /* default security attributes */
+    winsock_status_lock = CreateMutex(NULL,  /* default security attributes */
                                       FALSE, /* not owned initially */
-                                      NULL /* unnamed mutex */
-                                    );
+                                      NULL   /* unnamed mutex */
+    );
 
     if (winsock_status_lock == NULL) {
       /* an error occured */
       goto FAILURE;
     }
   }
-  /* winsock_status_lock is initialized since the check for NULL did not evaluate to to true */
+  /* winsock_status_lock is initialized since the check for NULL did not
+   * evaluate to to true */
 
   /* requesting the lock for the mutex */
-  winsock_status_mutex_lock_result = WaitForSingleObject( winsock_status_lock, /* handle to the lock */
-                                                          INFINITE /* no time out */
-                                                        );
+  winsock_status_mutex_lock_result =
+    WaitForSingleObject(winsock_status_lock, /* handle to the lock */
+                        INFINITE             /* no time out */
+    );
 
   /* check if the ownership over the mutex has been aquired */
   if (winsock_status_mutex_lock_result == WAIT_OBJECT_0) {
@@ -142,7 +148,7 @@ tcp_remote(const char* hostname, const port_t port)
     /* check if winsock is initialized, if not => initialize */
     if (!winsock_status.initialized) {
       /* startup wsa */
-      winapi_result = WSAStartup(MAKEWORD(2,2), &winsock_status.wsadata);
+      winapi_result = WSAStartup(MAKEWORD(2, 2), &winsock_status.wsadata);
 
       /* a non-zero result indicates an error */
       if (winapi_result != 0) {
@@ -164,13 +170,10 @@ tcp_remote(const char* hostname, const port_t port)
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_protocol = IPPROTO_TCP;
 
-    /* convert the port number from the arguments to ASCII, 6 bytes are available;
-     * see explanation in the declaration of ascii_port
+    /* convert the port number from the arguments to ASCII, 6 bytes are
+     * available; see explanation in the declaration of ascii_port
      */
-    snprintf(ascii_port,
-             sizeof(ascii_port) /* 6 */,
-             "%" PRIu16,
-             port);
+    snprintf(ascii_port, sizeof(ascii_port) /* 6 */, "%" PRIu16, port);
 
     /* get information about the user-given data */
     winapi_result = getaddrinfo(hostname, ascii_port, &hints, &result);
@@ -201,7 +204,7 @@ tcp_remote(const char* hostname, const port_t port)
       }
 
       /* attempting to connect to the server */
-      winapi_result = connect(ret.sock, ptr->ai_addr,  (int) ptr->ai_addrlen);
+      winapi_result = connect(ret.sock, ptr->ai_addr, (int)ptr->ai_addrlen);
       if (winapi_result == SOCKET_ERROR) {
         closesocket(ret.sock);
         ret.sock = INVALID_SOCKET;
@@ -212,7 +215,8 @@ tcp_remote(const char* hostname, const port_t port)
     /* increment the number of opened sockets by 1 */
     winsock_status.number_of_opened_sockets++;
   }
-  /* this is the else for the check if the mutex lock has been successfully aquired */
+  /* this is the else for the check if the mutex lock has been successfully
+     aquired */
   else if (winsock_status_mutex_lock_result == WAIT_ABANDONED) {
     /* a thread abandoned the lock and left it locked, giving up here */
     goto FAILURE;
@@ -220,7 +224,7 @@ tcp_remote(const char* hostname, const port_t port)
 
   /* the socket has been opened, releasing the lock for other threads */
   ReleaseMutex(winsock_status_lock);
-  
+
   freeaddrinfo(result);
 #endif /* unix */
 
@@ -235,8 +239,8 @@ FAILURE:
     close(ret.sockfd);
   ret.sockfd = -1;
 #elif defined(_WIN32)
-  /* on windows there is no socket to close since it is the last call to the windows API
-   * and if it fails there has no socket been opened
+  /* on windows there is no socket to close since it is the last call to the
+   * windows API and if it fails there has no socket been opened
    */
 
   if (result_initialized) {
@@ -255,34 +259,38 @@ FAILURE:
 }
 
 static ssz_t
-tcp_send(sock_t* sock, const char* buf, const 
+tcp_send(sock_t* sock,
+         const char* buf,
+         const
 #ifdef unix
-  sz_t
+         sz_t
 #elif defined(_WIN32)
-  int
+         int
 #endif /* unix */
-  buflen)
+           buflen)
 {
   if (!sock->is_valid)
     return -1;
   ssz_t ret;
 #ifdef unix
   // ret = (ssz_t)write (sock->sockfd, buf, buflen);
-  ret = (ssz_t) send(sock->sockfd, buf, buflen, 0);
+  ret = (ssz_t)send(sock->sockfd, buf, buflen, 0);
 #elif defined(_WIN32)
-  ret = (ssz_t) send(sock->sock, buf, buflen, 0);
+  ret = (ssz_t)send(sock->sock, buf, buflen, 0);
 #endif /* unix */
   return ret;
 }
 
 static ssz_t
-tcp_recv(sock_t* sock, char* buf, const
+tcp_recv(sock_t* sock,
+         char* buf,
+         const
 #ifdef unix
-  sz_t
+         sz_t
 #elif defined(_WIN32)
-  int
+         int
 #endif /* unix */
-  len)
+           len)
 {
   if (!sock->is_valid)
     return -1;
@@ -304,9 +312,10 @@ tcp_close(sock_t* sock)
   DWORD winsock_status_mutex_lock_result;
 
   /* requesting the lock for the mutex */
-  winsock_status_mutex_lock_result = WaitForSingleObject( winsock_status_lock, /* handle to the lock */
-                                                          INFINITE /* no time out */
-                                                        );
+  winsock_status_mutex_lock_result =
+    WaitForSingleObject(winsock_status_lock, /* handle to the lock */
+                        INFINITE             /* no time out */
+    );
 
   /* check if the ownership over the mutex has been aquired */
   if (winsock_status_mutex_lock_result == WAIT_OBJECT_0) {
@@ -319,8 +328,8 @@ tcp_close(sock_t* sock)
       WSACleanup();
       winsock_status.initialized = false;
       memset(&winsock_status.wsadata, 0, sizeof(winsock_status.wsadata));
-      ReleaseMutex(winsock_status_lock);
     }
+    ReleaseMutex(winsock_status_lock);
   } else if (winsock_status_mutex_lock_result == WAIT_ABANDONED) {
     /* an error has occurred */
     return;
@@ -350,11 +359,12 @@ tcp_server(const char* hostname, const port_t port)
 
   sock_t ret = {
 #ifdef unix
-     .sockfd = 0, 
+    .sockfd = 0,
 #elif defined(_WIN32)
-     .sock = INVALID_SOCKET,
+    .sock = INVALID_SOCKET,
 #endif /* unix */
-     .is_valid = false };
+    .is_valid = false
+  };
 
 #ifdef unix
   /* used to store the result of an API request */
@@ -393,14 +403,15 @@ tcp_server(const char* hostname, const port_t port)
   if (result < 0)
     goto FAILURE;
 #elif defined(_WIN32)
-  /* the windows API for some reason demands port numbers encoded in ASCII represenation;
-   * 65535 is the highest port number possible (2^16 - 1 is the highest 16-bit unsigned integer) with an ASCII
-   * encoding length of 5 characters, therefore 6 bytes (including the NUL-terminator) are needed to store
-   * a port number for the windows API
+  /* the windows API for some reason demands port numbers encoded in ASCII
+   * represenation; 65535 is the highest port number possible (2^16 - 1 is the
+   * highest 16-bit unsigned integer) with an ASCII encoding length of 5
+   * characters, therefore 6 bytes (including the NUL-terminator) are needed to
+   * store a port number for the windows API
    */
   char ascii_port[6] = { 0 };
   DWORD winsock_status_mutex_lock_result;
-  struct addrinfo *result = NULL;
+  struct addrinfo* result = NULL;
   struct addrinfo hints;
   int winapi_result = 0;
   /* tracks if addrinfo *result has been initialized */
@@ -409,21 +420,19 @@ tcp_server(const char* hostname, const port_t port)
   /* convert the port number from the arguments to ASCII, 6 bytes are available;
    * see explanation in the declaration of ascii_port
    */
-  snprintf(ascii_port,
-           sizeof(ascii_port) /* 6 */,
-           "%" PRIu16,
-           port);
+  snprintf(ascii_port, sizeof(ascii_port) /* 6 */, "%" PRIu16, port);
 
   /* requesting the lock for the mutex */
-  winsock_status_mutex_lock_result = WaitForSingleObject( winsock_status_lock, /* handle to the lock */
-                                                          INFINITE /* no time out */
-                                                        );
+  winsock_status_mutex_lock_result =
+    WaitForSingleObject(winsock_status_lock, /* handle to the lock */
+                        INFINITE             /* no time out */
+    );
 
   /* check if the ownership over the mutex has been aquired */
   if (winsock_status_mutex_lock_result == WAIT_OBJECT_0) {
     if (!winsock_status.initialized) {
       /* startup WSA */
-      winapi_result = WSAStartup(MAKEWORD(2,2), &winsock_status.wsadata);
+      winapi_result = WSAStartup(MAKEWORD(2, 2), &winsock_status.wsadata);
 
       /* non-zero indicates an error */
       if (winapi_result != 0) {
@@ -433,7 +442,7 @@ tcp_server(const char* hostname, const port_t port)
       /* now that WSA is initialized, set it to true */
       winsock_status.initialized = true;
     }
-    
+
     /* initialize the unused fields in hints with 0 */
     ZeroMemory(&hints, sizeof(hints));
 
@@ -442,7 +451,8 @@ tcp_server(const char* hostname, const port_t port)
     hints.ai_protocol = IPPROTO_TCP;
     hints.ai_flags = AI_PASSIVE;
 
-    /* getaddrinfo of the hostname and port with specified protocol information from hints */
+    /* getaddrinfo of the hostname and port with specified protocol information
+     * from hints */
     winapi_result = getaddrinfo(hostname, ascii_port, &hints, &result);
 
     if (winapi_result != 0) {
@@ -452,9 +462,10 @@ tcp_server(const char* hostname, const port_t port)
     result_initialized = true;
 
     /* initialize the socket that will be used for the server */
-    ret.sock = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
+    ret.sock =
+      socket(result->ai_family, result->ai_socktype, result->ai_protocol);
 
-    if(ret.sock == INVALID_SOCKET) {
+    if (ret.sock == INVALID_SOCKET) {
       goto FAILURE;
     }
 
@@ -511,12 +522,13 @@ next_client(serv_sock_t* server, const int listenlen)
 {
   /* the socket to be returned */
   sock_t ret = {
-#ifdef unix     
-     .sockfd = 0,
+#ifdef unix
+    .sockfd = 0,
 #elif defined(_WIN32)
-     .sock = INVALID_SOCKET,
+    .sock = INVALID_SOCKET,
 #endif /* unix */
-     .is_valid = false };
+    .is_valid = false
+  };
 
 #ifdef unix
   struct sockaddr_in client_addr;
