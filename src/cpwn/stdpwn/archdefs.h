@@ -89,14 +89,13 @@ enum ENDIAN
 #endif
 
 #if defined(PROCESSOR_LITTLE_ENDIAN) || defined(PROCESSOR_BIG_ENDIAN) || defined(UNDEFINED_ENDIAN)
-const enum ENDIAN ENDIANESS =
-#if defined(PROCESSOR_LITTLE_ENDIAN) && PROCESSOR_LITTLE_ENDIAN == 1
-    SMALL
-#elif defined(PROCESSOR_BIG_ENDIAN) && PROCESSOR_BIG_ENDIAN == 1
-    BIG
-#elif defined(UNDEFINED_ENDIAN) && UNDEFINED_ENDIAN == 1
-    UNDEFINED
+  #if defined(PROCESSOR_LITTLE_ENDIAN) && PROCESSOR_LITTLE_ENDIAN == 1
+    #define ENDIANESS SMALL
+  #elif defined(PROCESSOR_BIG_ENDIAN) && PROCESSOR_BIG_ENDIAN == 1
+    #define ENDIANESS BIG
+  #elif defined(UNDEFINED_ENDIAN) && UNDEFINED_ENDIAN == 1
+    #define ENDIANESS UNDEFINED
+  #endif /* which endianess */
 #endif /* ENDIANESS */
-#endif /* endianess defined ? */
 
 #endif /* ARCHDEFS_H */
